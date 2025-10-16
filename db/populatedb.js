@@ -2,20 +2,24 @@ require("dotenv").config();
 const { Client } = require("pg");
 
 const tableGeneration = `CREATE TABLE IF NOT EXISTS 
-generations (id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, generation INT);`;
+generations (id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, generation VARCHAR(3));`;
 
 const tableTypes = `CREATE TABLE IF NOT EXISTS 
 types (id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, type VARCHAR(50));`;
+
+const tablePokemon = `CREATE TABLE IF NOT EXISTS 
+pokemon(dexnr INT PRIMARY KEY, name VARCHAR(50), primary_type INT REFERENCES types(id), 
+        secondary_type INT REFERENCES types(id), generation INT REFERENCES generations(id), mega_evolution BOOL);`;
 
 const tableTrainer = `
 CREATE TYPE gender AS ENUM ('male', 'female', 'other');
 CREATE TABLE IF NOT EXISTS
 trainers (id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(50),
-        gender gender, generation INT REFERENCES generations(id), pos INT);`;
-
-const tablePokemon = `CREATE TABLE IF NOT EXISTS 
-pokemon(dexnr INT PRIMARY KEY, name VARCHAR(50), primary_type INT REFERENCES types(id), 
-        secondary_type INT REFERENCES types(id), generation INT REFERENCES generations(id), mega_evolution BOOL);`;
+        gender gender, generation INT REFERENCES generations(id), pos INT, 
+        pokemon_one INT REFERENCES pokemon(dexnr), pokemon_two INT REFERENCES pokemon(dexnr),
+        pokemon_three INT REFERENCES pokemon(dexnr), pokemon_four INT REFERENCES pokemon(dexnr),
+        pokemon_five INT REFERENCES pokemon(dexnr),  pokemon_six INT REFERENCES pokemon(dexnr)
+        );`;
 
 const main = async () => {
   console.log("Seeding....");
