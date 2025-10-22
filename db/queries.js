@@ -15,7 +15,6 @@ async function getGenerationId(gen) {
     `SELECT id FROM generations WHERE generation = $1`,
     [gen]
   );
-  console.log(rows);
   return rows[0];
 }
 
@@ -31,7 +30,6 @@ exports.getGeneration = async () => {
 
 exports.addPokemon = async (data) => {
   const  generation  = await getGenerationId(data.generation);
-  console.log(generation);
   const  type1  = await getTypeId(data.type1);
   const  type2  = await getTypeId(data.type2);
   await pool.query(
