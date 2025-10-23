@@ -20,13 +20,11 @@ const pokemonValidation = [
     .withMessage("Name is required")
     .isAlphanumeric()
     .withMessage("Name cannot include special symbols(*&^/%<>~$#@!...)"),
-  body("type1").trim().notEmpty().isAlpha().withMessage("Please select a type"),
+  body("type1").trim().notEmpty().withMessage("Please select a primary-type"),
   body("type2").trim(),
   body("generation")
     .trim()
     .notEmpty()
-    .withMessage("Please select a generation")
-    .isAlpha()
     .withMessage("Please select a generation"),
   body("mega").toBoolean().isBoolean({strict: false}).withMessage("System Error"),
 ];

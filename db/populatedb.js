@@ -36,8 +36,8 @@ const main = async () => {
   await client.query(tableGeneration);
   await client.query(tableTypes);
   await client.query(tablePokemon);
-  await client.query(tableTrainer);
   await client.query(tableTeam);
+  await client.query(tableTrainer);
   await client.query(dbData.generationsQuery, dbData.generationsData);
   await client.query(dbData.typeQuery, dbData.typeData);
   await client.end();

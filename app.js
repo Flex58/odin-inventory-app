@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("node:path");
 const { indexRouter } = require("./routers/indexRouter");
 const { pokemonRouter } = require("./routers/pokemonRouter");
+const { teamRouter } = require("./routers/teamRouter");
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/pokemon", pokemonRouter);
+app.use("/teams", teamRouter);
 app.use("/", indexRouter);
 
 app.listen(PORT, (err) => {
