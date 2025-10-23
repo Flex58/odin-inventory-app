@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('partials/errors') %>
+    <form action="createTeam" method="post">
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name">
+      <% for(let i = 1; i <= 6; i++) { %>
+      <label for="<% poke%><%= i%>">Pokemon <%= i%></label>
+      <select name="<% poke%><%= i%>" id="<% poke%><%= i%>">
+        <option value="-" disabled selected>-</option>
+        <% pokemon.map(mon => { %>
+        <option value="<%= mon.name%>">
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% }) %>
+      </select>
+      <% } %>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

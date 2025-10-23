@@ -13,7 +13,7 @@ pokemon(dexnr INT PRIMARY KEY, name VARCHAR(50), primary_type INT REFERENCES typ
         secondary_type INT REFERENCES types(id), generation INT REFERENCES generations(id), mega_evolution BOOL);`;
 
 const tableTeam = `CREATE TABLE IF NOT EXISTS 
-        teams (id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, 
+        teams (id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(50), 
         pokemon_one INT REFERENCES pokemon(dexnr), pokemon_two INT REFERENCES pokemon(dexnr),
         pokemon_three INT REFERENCES pokemon(dexnr), pokemon_four INT REFERENCES pokemon(dexnr),
         pokemon_five INT REFERENCES pokemon(dexnr), pokemon_six INT REFERENCES pokemon(dexnr));`;
