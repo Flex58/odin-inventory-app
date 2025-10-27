@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
-</head>
-<body>
-   <%- include("partials/errors.ejs") %>
-   <form action="createTrainer" method="post">
-       <h1>Add a Trainer</h1>
-       <label for="name">Name: </label>
-       <input type="text" name="name" id="name" required>
-   </form>
-</body>
+  </head>
+  <body>
+    <%- include("partials/errors.ejs") %>
+    <form action="createTrainer" method="post">
+      <h1>Add a Trainer</h1>
+      <label for="name">Name: </label>
+      <input type="text" name="name" id="name" required />
+      <label for="gender">Gender: </label>
+      <select name="gender" id="gender" required>
+        <option value="" selected disabled>-</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="generation">Generation: </label>
+      <select name="generation" id="generation" required>
+        <option value="" selected disabled>-</option>
+        <% generation.map(gen => { %>
+        <option value="<%= gen.id %>"><%= gen.generation %></option>
+        <% }) %>
+      </select>
+      <label for="pos">Position in Elite 4: </label>
+      <select name="pos" id="pos" required>
+        <option value="" selected disabled>-</option>
+        <option value="0">Champion</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+        <option value="5">Not in Elite 4</option>
+      </select>
+      <label for="team">Team: </label>
+      <select name="team" id="team" >
+        <option value="" selected disabled>-</option>
+        <% team.map(item => { %>
+        <option value="<%= item.id %>"><%= item.name %></option>
+        <% }) %>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
 </html>

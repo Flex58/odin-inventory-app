@@ -23,8 +23,13 @@ exports.getTypes = async () => {
   return rows;
 };
 
+exports.getTeams = async () => {
+  const { rows } = await pool.query("SELECT id FROM teams");
+  return rows;
+};
+
 exports.getGeneration = async () => {
-  const { rows } = await pool.query("SELECT generation FROM generations;");
+  const { rows } = await pool.query("SELECT generation, id FROM generations;");
   return rows;
 };
 
@@ -58,5 +63,13 @@ exports.addPokemon = async (data) => {
     `INSERT INTO pokemon(dexnr, name, primary_type, secondary_type, generation, mega_evolution)
                     VALUES ($1, $2, $3, $4, $5, $6)`,
     [data.dexnr, data.name, type1.id, type2.id, generation.id, data.mega]
+  );
+};
+
+exports.addTrainer = async (data) => {
+  await pool.query(
+    `INSERT INTO trainers(name, gender, pos, generation, team)
+     VALUES ($1, $2, $3, $4, $5)`,
+    [data.name, data.gender, data.pos, data.generation, data.team]
   );
 };
