@@ -6,6 +6,7 @@ const {
 } = require("express-validator");
 
 const db = require("../db/queries");
+const { render } = require("ejs");
 
 const pokemonValidation = [
   body("dexnr")
@@ -26,7 +27,10 @@ const pokemonValidation = [
     .trim()
     .notEmpty()
     .withMessage("Please select a generation"),
-  body("mega").toBoolean().isBoolean({strict: false}).withMessage("System Error"),
+  body("mega")
+    .toBoolean()
+    .isBoolean({ strict: false })
+    .withMessage("System Error"),
 ];
 
 exports.postPokemon = [
@@ -60,4 +64,12 @@ exports.getPokemonForm = async (req, res) => {
     type: type,
     generation: generation,
   });
+};
+
+exports.getAllPokemon = async (req, res) => {
+  const pokemon = await db.getAllPokemon();
+  if (!pokemon) {
+    throw new Error("Something went wrong");
+  }
+  res.render("viewPokemon", { title: "All Pokemon", pokemon: pokemon });
 };

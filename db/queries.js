@@ -10,6 +10,19 @@ async function getTypeId(type) {
   return rows[0];
 }
 
+exports.getAllPokemon = async () => {
+  const { rows } = await pool.query(`SELECT dexnr, name, mega_evolution, 
+    generations.generation, t1.type as primary_type, t2.type as secondary_type 
+    FROM pokemon
+    JOIN types as t1
+    ON t1.id = primary_type
+    JOIN types as t2
+    ON t2.id = secondary_type
+    JOIN generations
+    ON generations.id = pokemon.generation;`);
+  return rows;
+};
+
 async function getGenerationId(gen) {
   const { rows } = await pool.query(
     `SELECT id FROM generations WHERE generation = $1`,

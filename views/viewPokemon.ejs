@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %>></title>
+  </head>
+  <body>
+    <h1>View All Pokemon in the Database</h1>
+    <% pokemon.map(poke => { %>
+        <%- include('pokemon/pokemonCard.ejs') %> 
+    <% })%>
+  </body>
+</html>

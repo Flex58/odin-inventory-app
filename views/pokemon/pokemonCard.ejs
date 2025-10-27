@@ -1,0 +1,9 @@
+<% pokemon.map(poke => { %>
+<div id="<%= poke.dexnr %>">
+  <h2>#<%= poke.dexnr %> ||  <%= poke.name %></h2>
+  <p><%= poke.primary_type%> | <%= poke.secondary_type %></p>
+  <p>Gen: <%= poke.generation %></p>
+  <p>Can Megaevolve? <%= poke.mega_evolution %></p>
+</div>
+
+<% }) %>
