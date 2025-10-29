@@ -12,7 +12,7 @@ const teamValidator = [
     .trim()
     .notEmpty()
     .withMessage("Name is required.")
-    .isAlphanumeric(undefined, { ignore: " " } )
+    .isAlphanumeric(undefined, { ignore: " " })
     .withMessage("Name can only include letters and numbers."),
   body("poke1")
     .trim()
@@ -50,3 +50,12 @@ exports.postTeam = [
     res.redirect("/");
   },
 ];
+
+exports.viewAllTeams = async (req, res) => {
+  const teams = await db.getAllTeams();
+  if (!teams) {
+    throw new Error("Something went wrong");
+  }
+  console.log(teams)
+  res.render("viewTeams", { title: "View all Teams", teams: teams });
+};

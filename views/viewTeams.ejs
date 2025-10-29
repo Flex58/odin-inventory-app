@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>All Teams</h1>
+    <% teams.map(team => { %>
+    <div>
+      <h2><%= team.name %></h2>
+      <p>
+        #<%= team.pokemon_one %>| <%= team.poke1 %> ||| #<%= team.pokemon_two
+        %>| <%= team.poke2 %>
+      </p>
+      <p>
+        #<%= team.pokemon_three %>| <%= team.poke3 %> ||| #<%= team.pokemon_four
+        %>| <%= team.poke4 %>
+      </p>
+      <p>
+        #<%= team.pokemon_five %>| <%= team.poke5 %> ||| #<%= team.pokemon_six
+        %>| <%= team.poke6 %>
+      </p>
+    </div>
+    <% }) %>
+  </body>
+</html>

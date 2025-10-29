@@ -23,6 +23,25 @@ exports.getAllPokemon = async () => {
   return rows;
 };
 
+exports.getAllTeams = async () => {
+  const { rows } = await pool.query(`
+    SELECT teams.*, p1.name as poke1, p2.name as poke2, p3.name as poke3, 
+    p4.name as poke4, p5.name as poke5, p6.name as poke6 FROM teams
+    JOIN pokemon as p1
+    ON teams.pokemon_one = p1.dexnr
+    LEFT JOIN pokemon as p2
+    ON teams.pokemon_two = p2.dexnr
+    LEFT JOIN pokemon as p3
+    ON teams.pokemon_three = p3.dexnr
+    LEFT JOIN pokemon as p4
+    ON teams.pokemon_four = p4.dexnr
+    LEFT JOIN pokemon as p5
+    ON teams.pokemon_five = p5.dexnr
+    LEFT JOIN pokemon as p6
+    ON teams.pokemon_six = p6.dexnr;`);
+  return rows;
+};
+
 async function getGenerationId(gen) {
   const { rows } = await pool.query(
     `SELECT id FROM generations WHERE generation = $1`,
