@@ -56,7 +56,7 @@ exports.postTrainerForm = [
       });
     }
     const data = matchedData(req);
-    console.log(data.generation)
+    console.log(data.generation);
     await db.addTrainer(data);
     res.redirect("/");
   },
@@ -72,5 +72,21 @@ exports.getTrainerForm = async (req, res) => {
     title: "Add a Trainer",
     team: team,
     generation: generation,
+  });
+};
+
+exports.getAllTrainers = async (req, res) => {
+  const trainers = await db.getAllTrainers();
+  if (!trainers) {
+    throw new Error("Something went Wrong!");
+  }
+  trainers.forEach((trainer) => {
+    trainer.pos = trainer.pos == 0 ? "Champion" : trainer.pos;
+    trainer.pos = trainer.pos == 5 ? "Not in Elite 4" : trainer.pos;
+  });
+
+  res.render("viewTrainers", {
+    title: "View all Trainers",
+    trainers: trainers,
   });
 };

@@ -42,6 +42,19 @@ exports.getAllTeams = async () => {
   return rows;
 };
 
+exports.getAllTrainers = async () => {
+  const {rows} = await pool.query(`
+    SELECT trainers.*, teams.name AS teamname, generations.generation AS generationname
+    FROM trainers
+    LEFT JOIN teams
+    ON trainers.team = teams.id
+    JOIN generations
+    ON trainers.generation = generations.id
+    ;
+    `)
+  return rows
+}
+
 async function getGenerationId(gen) {
   const { rows } = await pool.query(
     `SELECT id FROM generations WHERE generation = $1`,
