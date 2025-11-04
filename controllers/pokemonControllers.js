@@ -73,3 +73,62 @@ exports.getAllPokemon = async (req, res) => {
   }
   res.render("viewPokemon", { title: "All Pokemon", pokemon: pokemon });
 };
+
+exports.detailPokemon = async (req, res) => {
+  const dexnr = req.params.dexnr;
+  const pokemon = await db.getSinglePokemon(dexnr);
+  res.render("detailPokemon", {
+    title: "Detailed view of ",
+    pokemon: pokemon[0],
+  });
+};
+
+exports.getDeletePokemon = async (req, res) => {
+  const dexnr = req.params.dexnr
+
+  res.render('deletePokemon', {title: "Delete a Pokemon", dexnr: dexnr})
+}
+
+exports.deletePokemon = async (req, res) => {
+  const dexnr = req.params.dexnr;
+  await db.deletePokemon(dexnr);
+  await db.removePokemonFromTeam(dexnr);
+  res.redirect("/pokemon");
+};
+
+exports.editPokemon = [
+  pokemonValidation,
+  async (req, res) => {
+    const errors = validationResult(req);
+    const dexnr = req.params.dexnr;
+    if (!errors.isEmpty()) {
+      const pokemon = await db.getSinglePokemon(dexnr);
+      const type = await db.getTypes();
+      const generation = await db.getGeneration();
+      return res.status(400).render("editPokemon", {
+        title: "Edit a Pokemon",
+        errors: errors.array(),
+        type: type,
+        generation: generation,
+        pokemon: pokemon[0],
+      });
+    }
+    const data = matchedData(req);
+    await db.editPokemon(data, dexnr);
+    await res.redirect("/");
+  },
+];
+
+exports.getEditPokemon = async (req, res) => {
+  const dexnr = req.params.dexnr;
+  const type = await db.getTypes();
+  const generation = await db.getGeneration();
+  const pokemon = await db.getSinglePokemon(dexnr);
+
+  res.render("editPokemon", {
+    title: "Edit a Pokemon",
+    pokemon: pokemon[0],
+    generation: generation,
+    type: type,
+  });
+};

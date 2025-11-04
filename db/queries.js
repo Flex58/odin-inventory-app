@@ -43,7 +43,7 @@ exports.getAllTeams = async () => {
 };
 
 exports.getAllTrainers = async () => {
-  const {rows} = await pool.query(`
+  const { rows } = await pool.query(`
     SELECT trainers.*, teams.name AS teamname, generations.generation AS generationname
     FROM trainers
     LEFT JOIN teams
@@ -51,9 +51,9 @@ exports.getAllTrainers = async () => {
     JOIN generations
     ON trainers.generation = generations.id
     ;
-    `)
-  return rows
-}
+    `);
+  return rows;
+};
 
 async function getGenerationId(gen) {
   const { rows } = await pool.query(
@@ -81,6 +81,36 @@ exports.getGeneration = async () => {
 exports.getPokemon = async () => {
   const { rows } = await pool.query("SELECT dexnr, name FROM pokemon");
   return rows;
+};
+
+exports.getSinglePokemon = async (dexnr) => {
+  const { rows } = await pool.query(
+    `SELECT name, dexnr, mega_evolution, generations.generation, t1.type as primary_type, t2.type as secondary_type 
+    FROM pokemon
+    JOIN types as t1
+    ON t1.id = primary_type
+    JOIN types as t2
+    ON t2.id = secondary_type
+    JOIN generations
+    ON generations.id = pokemon.generation
+    WHERE dexnr = $1;`,
+    [dexnr]
+  );
+  return rows;
+};
+
+exports.editPokemon = async (data, dexnr) => {
+  const generation = await getGenerationId(data.generation);
+  const type1 = await getTypeId(data.type1);
+  const type2 = await getTypeId(data.type2);
+  await pool.query(
+    `
+   UPDATE pokemon SET dexnr = $1, name = $2, primary_type = $3, 
+                      secondary_type = $4, generation = $5, mega_evolution = $6
+   WHERE dexnr = $7 
+    `,
+    [dexnr, data.name, type1.id, type2.id, generation.id, data.mega, data.dexnr]
+  );
 };
 
 exports.addTeam = async (data) => {

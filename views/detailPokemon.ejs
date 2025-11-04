@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> <%= pokemon.name %></title>
+  </head>
+  <body>
+    <div id="<%= pokemon.dexnr %>">
+      <h2>#<%= pokemon.dexnr %> || <%= pokemon.name %></h2>
+      <p><%= pokemon.primary_type%> | <%= pokemon.secondary_type %></p>
+      <p>Gen: <%= pokemon.generation %></p>
+      <p>Can Megaevolve? <%= pokemon.mega_evolution %></p>
+      <form action="./<%= pokemon.dexnr%>/edit" method="get">
+        <button type="submit">Edit</button>
+      </form>
+      <form action="./<%= pokemon.dexnr%>/delete" method="get">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  </body>
+</html>

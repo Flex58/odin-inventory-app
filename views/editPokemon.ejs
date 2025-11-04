@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include('partials/errors.ejs') %>
+    <form action="edit" method="post">
+      <h1>Edit a Pokemon</h1>
+      <label for="dexnr">National-Dex Number: </label>
+      <input
+        type="number"
+        name="dexnr"
+        id="dexnr"
+        value="<%= pokemon.dexnr %>"
+        required
+      />
+      <label for="name">Name: </label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value="<%= pokemon.name %>"
+        required
+      />
+      <label for="type1">Type-1: </label>
+      <select name="type1" id="type1" required>
+        <% type.map((type) => { %>
+        <% if(type.type == '-') { %>
+        <option value="<%= type.type %>" disabled><%= type.type %></option>
+        <% } else if(type.type == pokemon.primary_type) { %>
+        <option value="<%= type.type %>" selected><%= type.type %></option>
+        <% }else { %>
+
+        <option value="<%= type.type %>"><%= type.type %></option>
+        <%}%> <% }) %>
+      </select>
+      <label for="type2">Type-2: </label>
+      <select name="type2" id="type2">
+        <% type.map((type ) => { %> <% if(type.type == '-') { %>
+        <option value="<%= type.type %>"><%= type.type %></option>
+        <% } else if (type.type == pokemon.secondary_type) {%>
+        <option value="<%= type.type %>" selected><%= type.type %></option>
+
+        <% } else { %>
+
+        <option value="<%= type.type %>"><%= type.type %></option>
+        <%}%> <% }) %>
+      </select>
+      <label for="generation">Generation: </label>
+      <select name="generation" id="generation" required>
+        <option value="-" disabled>-</option>
+        <% generation.map((gen ) => { %> <% if( gen.generation == pokemon.generation) { %>
+        <option value="<%= gen.generation %>" selected>
+          <%= gen.generation %>
+        </option>
+        <% } else {%>
+        <option value="<%= gen.generation %>"><%= gen.generation %></option>
+        <% }}) %>
+      </select>
+      <label for="mega">Has Mega-Evolution: </label>
+      <input
+        type="checkbox"
+        name="mega"
+        id="mega"
+        checked="<%= pokemon.mega_evolution %>"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
