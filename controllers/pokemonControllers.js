@@ -92,7 +92,7 @@ exports.getDeletePokemon = async (req, res) => {
 exports.deletePokemon = async (req, res) => {
   const dexnr = req.params.dexnr;
   await db.deletePokemon(dexnr);
-  await db.removePokemonFromTeam(dexnr);
+  // await db.removePokemonFromTeam(dexnr);
   res.redirect("/pokemon");
 };
 

@@ -113,6 +113,37 @@ exports.editPokemon = async (data, dexnr) => {
   );
 };
 
+exports.deletePokemon = async (dexnr) => {
+  await pool.query(
+    `DELETE FROM teams
+                  WHERE pokemon_one = $1
+                  AND COALESCE(pokemon_two, pokemon_three, pokemon_four, pokemon_five, pokemon_six) IS NULL;`,
+    [dexnr]
+  );
+
+  await pool.query(
+    `
+   UPDATE teams
+   SET
+    pokemon_two = CASE WHEN pokemon_one IS NOT NULL AND pokemon_two = $1 THEN NULL ELSE pokemon_two END, 
+    pokemon_three = CASE WHEN pokemon_one IS NOT NULL AND pokemon_three = $1 THEN NULL ELSE pokemon_three END, 
+    pokemon_four = CASE WHEN pokemon_one IS NOT NULL AND pokemon_four = $1 THEN NULL ELSE pokemon_four END, 
+    pokemon_five = CASE WHEN pokemon_one IS NOT NULL AND pokemon_five = $1 THEN NULL ELSE pokemon_five END, 
+    pokemon_six = CASE WHEN pokemon_one IS NOT NULL AND pokemon_six = $1 THEN NULL ELSE pokemon_six END, 
+    pokemon_one = CASE
+                WHEN pokemon_one = $1
+                AND (pokemon_two IS NOT NULL OR pokemon_three IS NOT NULL 
+                OR pokemon_four IS NOT NULL OR pokemon_five IS NOT NULL OR pokemon_six IS NOT NULL)
+                THEN NULL
+                ELSE pokemon_one
+              END;
+    `,
+    [dexnr]
+  );
+
+  await pool.query(`DELETE FROM pokemon WHERE dexnr = $1`, [dexnr]);
+};
+
 exports.addTeam = async (data) => {
   await pool.query(
     `INSERT INTO teams(name, pokemon_one, pokemon_two, pokemon_three,
