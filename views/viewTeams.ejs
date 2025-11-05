@@ -22,6 +22,9 @@
         #<%= team.pokemon_five %>| <%= team.poke5 %> ||| #<%= team.pokemon_six
         %>| <%= team.poke6 %>
       </p>
+      <form action="<%= team.id %>" method="get">
+        <button type="submit">View Details</button>
+      </form>
     </div>
     <% }) %>
   </body>

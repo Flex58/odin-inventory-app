@@ -179,3 +179,8 @@ exports.addTrainer = async (data) => {
     [data.name, data.gender, data.pos, data.generation, data.team]
   );
 };
+
+exports.getSingleTeam = async (id) => {
+  const { rows } = await pool.query(`SELECT * FROM teams WHERE id = $1`, [id]);
+  return rows[0];
+};

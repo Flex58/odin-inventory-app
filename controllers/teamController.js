@@ -56,6 +56,30 @@ exports.viewAllTeams = async (req, res) => {
   if (!teams) {
     throw new Error("Something went wrong");
   }
-  console.log(teams)
+  console.log(teams);
   res.render("viewTeams", { title: "View all Teams", teams: teams });
+};
+
+exports.detailTeam = async (req, res) => {
+  const id = req.params.id;
+
+  const teams = await db.getSingleTeam(id);
+  const pokemon = [];
+  for (property in teams) {
+    if (property == "id" || property == "name") {
+      continue;
+    } else {
+      const value = teams[property]
+      console.log(value)
+      const poke = await db.getSinglePokemon(value);
+      pokemon.push(poke[0]);
+    }
+  }
+  console.log(pokemon)
+
+  res.render("detailTeams", {
+    title: "View Details",
+    teams: teams,
+    pokemon: pokemon,
+  });
 };
