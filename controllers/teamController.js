@@ -88,7 +88,11 @@ exports.getEditForm = async (req, res) => {
   if (!pokemon) {
     throw new Error("Something went wrong");
   }
-  res.render("editTeams", { title: "Edit a Team", poke: pokemon, teams: teams });
+  res.render("editTeams", {
+    title: "Edit a Team",
+    poke: pokemon,
+    teams: teams,
+  });
 };
 
 exports.postEditTeam = [
@@ -111,3 +115,16 @@ exports.postEditTeam = [
     res.redirect("/");
   },
 ];
+
+exports.getDeleteTeams = async (req, res) => {
+  const id = req.params.id;
+
+  res.render("deleteTeam", { title: "Delete a Team", id: id });
+};
+
+exports.deleteTeams = async (req, res) => {
+  const id = req.params.id;
+
+  await db.deleteTeams(id);
+  res.redirect("/");
+};

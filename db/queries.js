@@ -193,3 +193,15 @@ exports.editTeam = async(data, id) => {
         WHERE id = $1;
     `, [id, data.name, data.poke1, data.poke2, data.poke3, data.poke4, data.poke5, data.poke6])
 }
+
+exports.deleteTeams = async (id) => {
+  await pool.query(`
+   UPDATE trainers
+   SET team = NULL
+   WHERE team = $1 
+    `, [id])
+
+  await pool.query(`
+   DELETE FROM teams WHERE id = $1 
+    `, [id])
+}
