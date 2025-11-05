@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include("partials/errors.ejs") %>
+    <form action="edit" method="post">
+      <label for="name">Name: </label>
+      <input type="text" name="name" id="name" value="<%= teams.name %>"/>
+      <% for(let i = 1; i <= 6; i++) { %>
+      <label for="poke<%= i%>">Pokemon <%= i%></label>
+      <select name="poke<%= i%>" id="poke<%= i%>">
+        <% if(i === 1) { %>
+        <option value="" disabled>-</option>
+
+        <% } else { %>
+        <option value="">-</option>
+
+        <% } %> <% poke.map(mon => { %> <% if(i == 1 && mon.dexnr ==
+        teams.pokemon_one) { %>
+        <option value="<%= mon.dexnr%>" selected>
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% } else if(i == 2 && mon.dexnr == teams.pokemon_two) { %>
+        <option value="<%= mon.dexnr%>" selected>
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% }  else if(i == 3 && mon.dexnr == teams.pokemon_three) { %>
+        <option value="<%= mon.dexnr%>" selected>
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% }  else if(i == 4 && mon.dexnr == teams.pokemon_four) { %>
+        <option value="<%= mon.dexnr%>" selected>
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% }  else if(i == 5 && mon.dexnr == teams.pokemon_five) { %>
+        <option value="<%= mon.dexnr%>" selected>
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% }  else if(i == 6 && mon.dexnr == teams.pokemon_six) { %>
+        <option value="<%= mon.dexnr%>" selected>
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% }  else { %>
+        <option value="<%= mon.dexnr%>">
+          #<%= mon.dexnr %>| <%= mon.name %>
+        </option>
+        <% } %> <% }) %>
+      </select>
+      <% } %>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

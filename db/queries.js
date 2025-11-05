@@ -184,3 +184,12 @@ exports.getSingleTeam = async (id) => {
   const { rows } = await pool.query(`SELECT * FROM teams WHERE id = $1`, [id]);
   return rows[0];
 };
+
+exports.editTeam = async(data, id) => {
+  await pool.query(`
+   UPDATE teams
+   SET name = $2, pokemon_one = $3, pokemon_two = $4, pokemon_three = $5,
+        pokemon_four = $6, pokemon_five = $7, pokemon_six = $8
+        WHERE id = $1;
+    `, [id, data.name, data.poke1, data.poke2, data.poke3, data.poke4, data.poke5, data.poke6])
+}

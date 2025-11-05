@@ -56,7 +56,6 @@ exports.viewAllTeams = async (req, res) => {
   if (!teams) {
     throw new Error("Something went wrong");
   }
-  console.log(teams);
   res.render("viewTeams", { title: "View all Teams", teams: teams });
 };
 
@@ -69,13 +68,11 @@ exports.detailTeam = async (req, res) => {
     if (property == "id" || property == "name") {
       continue;
     } else {
-      const value = teams[property]
-      console.log(value)
+      const value = teams[property];
       const poke = await db.getSinglePokemon(value);
       pokemon.push(poke[0]);
     }
   }
-  console.log(pokemon)
 
   res.render("detailTeams", {
     title: "View Details",
@@ -83,3 +80,34 @@ exports.detailTeam = async (req, res) => {
     pokemon: pokemon,
   });
 };
+
+exports.getEditForm = async (req, res) => {
+  const id = req.params.id;
+  const pokemon = await db.getPokemon();
+  const teams = await db.getSingleTeam(id);
+  if (!pokemon) {
+    throw new Error("Something went wrong");
+  }
+  res.render("editTeams", { title: "Edit a Team", poke: pokemon, teams: teams });
+};
+
+exports.postEditTeam = [
+  teamValidator,
+  async (req, res) => {
+    const id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const teams = await db.getSingleTeam(id);
+      const pokemon = await db.getPokemon();
+      return res.status(400).render("editTeams", {
+        title: "Create a Team",
+        poke: pokemon,
+        errors: errors.array(),
+        teams: teams,
+      });
+    }
+    const data = matchedData(req);
+    await db.editTeam(data, id);
+    res.redirect("/");
+  },
+];
