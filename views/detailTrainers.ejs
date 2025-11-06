@@ -6,6 +6,12 @@
     <title><%= title %></title>
   </head>
   <body>
+    <form action="./<%= trainer.id %>/edit" method="get">
+        <button type="submit">Edit</button>
+      </form>
+      <form action="./<%= trainer.id %>/delete" method="get">
+        <button type="submit">Delete</button>
+      </form>
     <h1><%= trainer.name %></h1>
     <p><%= trainer.gender %></p>
     <p>Position in Elite 4: <%= trainer.pos %></p>

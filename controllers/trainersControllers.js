@@ -6,6 +6,7 @@ const {
 } = require("express-validator");
 
 const db = require("../db/queries");
+const { render } = require("ejs");
 
 const trainerValidator = [
   body("name")
@@ -56,7 +57,6 @@ exports.postTrainerForm = [
       });
     }
     const data = matchedData(req);
-    console.log(data.generation);
     await db.addTrainer(data);
     res.redirect("/");
   },
@@ -118,4 +118,41 @@ exports.getEditForm = async (req, res) => {
     generation: generation,
     team: team,
   });
+};
+
+exports.editForm = [
+  trainerValidator,
+  async (req, res) => {
+    const id = req.params.id;
+    const errors = validationResult(req);
+    const trainer = db.getSingleTrainer(id);
+    const team = await db.getTeams();
+    const generation = await db.getGeneration();
+    if (!errors.isEmpty()) {
+      res.status(400).render("editTrainers", {
+        title: "Edit a Trainer",
+        errors: errors.array(),
+        team: team,
+        generation: generation,
+        trainer: trainer,
+      });
+    }
+    const data = matchedData(req);
+    await db.editTrainer(data, id);
+    res.redirect("/");
+  },
+];
+
+exports.getDeleteForm = async (req, res) => {
+  const id = req.params.id;
+
+  res.render("deleteTrainer", { title: "Delete a Trainer", id: id });
+};
+
+exports.deleteTrainer = async (req, res) => {
+  const id = req.params.id;
+
+  await db.deleteTrainer(id);
+
+  res.redirect("/");
 };

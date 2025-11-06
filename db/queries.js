@@ -181,7 +181,8 @@ exports.addTrainer = async (data) => {
 };
 
 exports.getSingleTeam = async (id) => {
-  const { rows } = await pool.query(`SELECT teams.*, p1.name as poke1, p2.name as poke2, p3.name as poke3, 
+  const { rows } = await pool.query(
+    `SELECT teams.*, p1.name as poke1, p2.name as poke2, p3.name as poke3, 
     p4.name as poke4, p5.name as poke5, p6.name as poke6 FROM teams
     JOIN pokemon as p1
     ON teams.pokemon_one = p1.dexnr
@@ -195,7 +196,9 @@ exports.getSingleTeam = async (id) => {
     ON teams.pokemon_five = p5.dexnr
     LEFT JOIN pokemon as p6
     ON teams.pokemon_six = p6.dexnr
-    WHERE id = $1;`, [id]);
+    WHERE id = $1;`,
+    [id]
+  );
   return rows[0];
 };
 
@@ -253,4 +256,24 @@ exports.getSingleTrainer = async (id) => {
   );
 
   return rows[0];
+};
+
+exports.editTrainer = async (data, id) => {
+  await pool.query(
+    `
+   UPDATE trainers
+   SET name = $2, gender = $3, generation = $4, pos = $5, team = $6
+   WHERE id = $1
+    `,
+    [id, data.name, data.gender, data.generation, data.pos, data.team]
+  );
+};
+
+exports.deleteTrainer = async (id) => {
+  await pool.query(
+    `
+   DELETE FROM trainers WHERE id = $1 
+    `,
+    [id]
+  );
 };
