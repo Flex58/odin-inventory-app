@@ -69,7 +69,7 @@ exports.getTypes = async () => {
 };
 
 exports.getTeams = async () => {
-  const { rows } = await pool.query("SELECT id FROM teams");
+  const { rows } = await pool.query("SELECT id, name FROM teams");
   return rows;
 };
 
@@ -181,27 +181,76 @@ exports.addTrainer = async (data) => {
 };
 
 exports.getSingleTeam = async (id) => {
-  const { rows } = await pool.query(`SELECT * FROM teams WHERE id = $1`, [id]);
+  const { rows } = await pool.query(`SELECT teams.*, p1.name as poke1, p2.name as poke2, p3.name as poke3, 
+    p4.name as poke4, p5.name as poke5, p6.name as poke6 FROM teams
+    JOIN pokemon as p1
+    ON teams.pokemon_one = p1.dexnr
+    LEFT JOIN pokemon as p2
+    ON teams.pokemon_two = p2.dexnr
+    LEFT JOIN pokemon as p3
+    ON teams.pokemon_three = p3.dexnr
+    LEFT JOIN pokemon as p4
+    ON teams.pokemon_four = p4.dexnr
+    LEFT JOIN pokemon as p5
+    ON teams.pokemon_five = p5.dexnr
+    LEFT JOIN pokemon as p6
+    ON teams.pokemon_six = p6.dexnr
+    WHERE id = $1;`, [id]);
   return rows[0];
 };
 
-exports.editTeam = async(data, id) => {
-  await pool.query(`
+exports.editTeam = async (data, id) => {
+  await pool.query(
+    `
    UPDATE teams
    SET name = $2, pokemon_one = $3, pokemon_two = $4, pokemon_three = $5,
         pokemon_four = $6, pokemon_five = $7, pokemon_six = $8
         WHERE id = $1;
-    `, [id, data.name, data.poke1, data.poke2, data.poke3, data.poke4, data.poke5, data.poke6])
-}
+    `,
+    [
+      id,
+      data.name,
+      data.poke1,
+      data.poke2,
+      data.poke3,
+      data.poke4,
+      data.poke5,
+      data.poke6,
+    ]
+  );
+};
 
 exports.deleteTeams = async (id) => {
-  await pool.query(`
+  await pool.query(
+    `
    UPDATE trainers
    SET team = NULL
    WHERE team = $1 
-    `, [id])
+    `,
+    [id]
+  );
 
-  await pool.query(`
+  await pool.query(
+    `
    DELETE FROM teams WHERE id = $1 
-    `, [id])
-}
+    `,
+    [id]
+  );
+};
+
+exports.getSingleTrainer = async (id) => {
+  const { rows } = await pool.query(
+    `
+    SELECT trainers.*, teams.name AS teamname, generations.generation AS generationname
+    FROM trainers
+    LEFT JOIN teams
+    ON trainers.team = teams.id
+    JOIN generations
+    ON trainers.generation = generations.id
+    WHERE trainers.id = $1; 
+    `,
+    [id]
+  );
+
+  return rows[0];
+};

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <%- include("partials/errors.ejs") %>
+    <form action="editTrainer" method="post">
+      <h1>Add a Trainer</h1>
+      <label for="name">Name: </label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value="<%= trainer.name %>"
+        required
+      />
+      <label for="gender">Gender: </label>
+      <select name="gender" id="gender" required>
+        <option value="" disabled>-</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="generation">Generation: </label>
+      <select name="generation" id="generation" required>
+        <option value="" disabled>-</option>
+        <% generation.map(gen => { %>
+        <option value="<%= gen.id %>"><%= gen.generation %></option>
+        <% }) %>
+      </select>
+      <label for="pos">Position in Elite 4: </label>
+      <select name="pos" id="pos" required>
+        <option value="" disabled>-</option>
+        <option value="0">Champion</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+        <option value="5">Not in Elite 4</option>
+      </select>
+      <label for="team">Team: </label>
+      <select name="team" id="team">
+        <option value="" disabled>-</option>
+        <% team.map(item => { %>
+        <option value="<%= item.id %>"><%= item.name %></option>
+        <% }) %>
+      </select>
+      <button type="submit">Submit</button>
+      <script>
+        window.addEventListener("load", (e) => {
+          const genderOpt = document.querySelector(
+            `#gender option[value =<%= trainer.gender %>]`
+          );
+          const posOpt = document.querySelector(
+            `#pos option[value ='<%= trainer.pos %>']`
+          );
+          const generationOpt = document.querySelector(
+            `#generation option[value ='<%= trainer.generation %>']`
+          );
+
+          const teamOpt = document.querySelector(
+            `#team option[value ='<%= trainer.team %>']`
+          );
+
+          genderOpt.selected = true;
+          genderOpt.defaultSelected = true;
+          posOpt.selected = true;
+          posOpt.defaultSelected = true;
+          generationOpt.selected = true;
+          generationOpt.defaultSelected = true;
+          teamOpt.selected = true;
+          teamOpt.defaultSelected = true;
+        });
+      </script>
+    </form>
+  </body>
+</html>

@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %>></title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>View All Trainers</h1>
     <% trainers.map( trainer => { %>
-       <h2><%= trainer.name %></h2> 
-       <p><%= trainer.gender %></p>
-       <p>Generation <%= trainer.generationname %></p>
-       <p>Position in Elite 4: <%= trainer.pos %></p>
-       <p>Team: <a href="/teams/<%= trainer.team%>"><%= trainer.teamname %></a></p>
+    <h2><%= trainer.name %></h2>
+    <p><%= trainer.gender %></p>
+    <p>Generation <%= trainer.generationname %></p>
+    <p>Position in Elite 4: <%= trainer.pos %></p>
+    <p>Team: <a href="/teams/<%= trainer.team%>"><%= trainer.teamname %></a></p>
+
+    <form action="<%= trainer.id %>" method="get">
+      <button type="submit">View Details</button>
+    </form>
     <% }) %>
-</body>
+  </body>
 </html>

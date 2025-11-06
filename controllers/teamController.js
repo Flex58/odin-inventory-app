@@ -65,12 +65,19 @@ exports.detailTeam = async (req, res) => {
   const teams = await db.getSingleTeam(id);
   const pokemon = [];
   for (property in teams) {
-    if (property == "id" || property == "name") {
-      continue;
-    } else {
+    if (
+      property == "pokemon_one" ||
+      property == "pokemon_two" ||
+      property == "pokemon_three" ||
+      property == "pokemon_four" ||
+      property == "pokemon_five" ||
+      property == "pokemon_six"
+    ) {
       const value = teams[property];
       const poke = await db.getSinglePokemon(value);
       pokemon.push(poke[0]);
+    } else {
+      continue;
     }
   }
 

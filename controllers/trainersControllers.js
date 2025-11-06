@@ -90,3 +90,32 @@ exports.getAllTrainers = async (req, res) => {
     trainers: trainers,
   });
 };
+
+exports.detailTrainer = async (req, res) => {
+  const id = req.params.id;
+
+  const trainer = await db.getSingleTrainer(id);
+  const team = await db.getSingleTeam(trainer.team);
+  trainer.pos = trainer.pos == 0 ? "Champion" : trainer.pos;
+  trainer.pos = trainer.pos == 5 ? "Not in Elite 4" : trainer.pos;
+
+  res.render("detailTrainers", {
+    title: "View details of Trainer",
+    trainer: trainer,
+    team: team,
+  });
+};
+
+exports.getEditForm = async (req, res) => {
+  const id = req.params.id;
+
+  const trainer = await db.getSingleTrainer(id);
+  const generation = await db.getGeneration();
+  const team = await db.getTeams();
+  res.render("editTrainers", {
+    title: "Edit a Trainer",
+    trainer: trainer,
+    generation: generation,
+    team: team,
+  });
+};
